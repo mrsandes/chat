@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export default function MessageList({ messages, username, selectedUser }) {
+  const bottomRef = useRef(null);
+
   const filtered = messages.filter((msg) => {
     if (selectedUser) {
       return (
@@ -10,6 +12,10 @@ export default function MessageList({ messages, username, selectedUser }) {
     }
     return !msg.receiverName;
   });
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
     <div style={{
@@ -24,6 +30,7 @@ export default function MessageList({ messages, username, selectedUser }) {
           <b>{msg.senderName}:</b> {msg.content}
         </div>
       ))}
+      <div ref={bottomRef} />
     </div>
   );
 }
