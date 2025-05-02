@@ -39,7 +39,7 @@ export class AppGateway {
   }
 
   @SubscribeMessage('getUsers')
-  async handleusers(
+  async handleUsers(
     @ConnectedSocket() client: Socket,
   ) {
     const users = await this.userService.findAll();
@@ -62,5 +62,8 @@ export class AppGateway {
   ) {
     const user = await this.authService.register(newLogin);
     client.emit('registerResponse', user);
+
+    const users = await this.userService.findAll();
+    this.server.emit('users', users);
   }
 }
