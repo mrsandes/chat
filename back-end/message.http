@@ -1,0 +1,11 @@
+### Post a new message
+POST http://localhost:3333/auth/login
+Content-Type: application/json 
+
+{
+  "username": "feriado 1",
+  "password": "123456"
+}
+
+### Get all messages
+GET http://localhost:3333/message/
