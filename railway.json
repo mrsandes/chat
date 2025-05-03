@@ -1,0 +1,26 @@
+{
+  "services": [
+    {
+      "name": "backend",
+      "root": "backend",
+      "startCommand": "npm run start:prod",
+      "buildCommand": "npm install && npm run build",
+      "healthcheckPath": "/",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": "3000"
+      }
+    },
+    {
+      "name": "frontend",
+      "root": "frontend",
+      "startCommand": "npm run start",
+      "buildCommand": "npm install && npm run build",
+      "healthcheckPath": "/",
+      "env": {
+        "NODE_ENV": "production",
+        "NEXT_PUBLIC_API_URL": "https://<SEU-BACKEND>.railway.app"
+      }
+    }
+  ]
+}
