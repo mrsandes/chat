@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import LoginForm from './components/LoginForm';
 import ChatWindow from './components/ChatWindow';
 
-const newSocket = io('https://backend-qa9s.onrender.com', {
+const newSocket = io('http://localhost:5173/', {
   transports: ['websocket'],
 });
 
