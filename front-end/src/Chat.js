@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import LoginForm from './components/LoginForm';
 import ChatWindow from './components/ChatWindow';
 
-const newSocket = io('http://localhost:5173/', {
+const newSocket = io('/', {
   transports: ['websocket'],
 });
 
