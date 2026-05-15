@@ -3,7 +3,25 @@
   <head>
     <meta charset="utf-8" />  
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Chat-app</title>
+    <style>
+      /* Remove margens do navegador e a linha branca ao redor */
+      body, html {
+        position: fixed; /* Trava o fundo contra scrolls indesejados no mobile */
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      #root {
+        height: 100dvh; /* Usa a altura dinâmica para compensar o teclado */
+        display: flex;
+        flex-direction: column;
+      }
+  </style>
   </head>
   <body>
     <div id="root"></div>

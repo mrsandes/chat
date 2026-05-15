@@ -1,66 +1,69 @@
 import React from 'react';
 
-export default function LoginForm({
-  socket,
-  username,
-  password,
-  setUsername,
-  setPassword,
-  setIsLoggedIn,
-}) {
-  const handleLogin = () => {
-    if (!username || !password) {
-      alert('Por favor, insira seu nome de usuário e senha.');
-      return;
-    }
-
-    socket.emit('login', { username, password });
-    socket.once('loginResponse', (response) => {
-      if (response) {
-        localStorage.setItem('username', username);
-        setIsLoggedIn(true);
-      } else {
-        alert('Falha no login');
-      }
-    });
+export default function LoginForm({ socket, username, password, setUsername, setPassword, setIsLoggedIn }) {
+  const containerStyle = {
+    display: 'flex',
+    height: '100dvh',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#5865f2'
   };
 
-  const handleRegister = () => {
-    if (!username || !password) {
-      alert('Por favor, insira seu nome de usuário e senha.');
-      return;
-    }
+  const cardStyle = {
+    backgroundColor: '#36393f',
+    padding: '32px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+    width: '100%',
+    maxWidth: '400px',
+    textAlign: 'center',
+    color: 'white'
+  };
 
-    socket.emit('register', { username, password });
-    socket.once('registerResponse', (response) => {
-      if (response) {
-        alert('Usuário criado com sucesso!');
-        handleLogin();
-      } else {
-        alert('Falha ao criar o usuário');
-      }
+  const inputStyle = {
+    width: '100%',
+    padding: '10px',
+    marginBottom: '15px',
+    borderRadius: '4px',
+    border: 'none',
+    backgroundColor: '#202225',
+    color: 'white',
+    boxSizing: 'border-box'
+  };
+
+  const buttonStyle = {
+    width: '100%',
+    padding: '12px',
+    backgroundColor: '#5865f2',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    marginBottom: '10px'
+  };
+
+  const handleAction = (type) => {
+    if (!username || !password) return alert('Preencha tudo!');
+    socket.emit(type, { username, password });
+    socket.once(`${type}Response`, (res) => {
+      if (res) {
+        if (type === 'login') setIsLoggedIn(true);
+        else alert('Criado! Agora faça login.');
+      } else alert('Erro na operação');
     });
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
-      <h2>Login</h2>
-      <input
-        type="text"
-        placeholder="Nome de usuário"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        style={{ width: '100%', marginBottom: 10 }}
-      />
-      <input
-        type="password"
-        placeholder="Senha"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ width: '100%', marginBottom: 10 }}
-      />
-      <button onClick={handleLogin}>Login</button>
-      <p>Não tem uma conta? <button onClick={handleRegister}>Registrar</button></p>
+    <div style={containerStyle}>
+      <div style={cardStyle}>
+        <h2 style={{ marginBottom: '8px' }}>Boas-vindas de volta!</h2>
+        <p style={{ color: '#b9bbbe', marginBottom: '20px' }}>Estamos muito animados em te ver novamente!</p>
+        <input type="text" placeholder="Usuário" value={username} onChange={e => setUsername(e.target.value)} style={inputStyle} />
+        <input type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} style={inputStyle} />
+        <button onClick={() => handleAction('login')} style={buttonStyle}>Entrar</button>
+        <button onClick={() => handleAction('register')} style={{ ...buttonStyle, backgroundColor: 'transparent', border: '1px solid #5865f2' }}>Registrar</button>
+      </div>
     </div>
   );
 }

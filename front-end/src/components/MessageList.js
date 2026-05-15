@@ -14,20 +14,37 @@ export default function MessageList({ messages, username, selectedUser }) {
   });
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    const scrollToBottom = () => {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    };
+
+    scrollToBottom();
+    
+    // Executa uma segunda vez após um curto delay para garantir 
+    // que o redimensionamento do teclado terminou
+    const timeoutId = setTimeout(scrollToBottom, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, [filtered.length]); //
 
   return (
     <div style={{
-      height: '60vh',
+      flex: 1,
       overflowY: 'auto',
-      border: '1px solid gray',
-      marginBottom: 10,
-      padding: 10
+      padding: '20px 0',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '15px'
     }}>
       {filtered.map((msg, i) => (
-        <div key={i}>
-          <b>{msg.senderName}:</b> {msg.content}
+        <div key={i} style={{ padding: '0 20px', borderLeft: msg.senderName === username ? '4px solid #5865f2' : '4px solid transparent' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+            <b style={{ color: '#fff', fontSize: '14px' }}>{msg.senderName}</b>
+            <span style={{ color: '#72767d', fontSize: '11px' }}>Hoje às {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+          </div>
+          <div style={{ color: '#dcddde', marginTop: '4px', fontSize: '15px', lineHeight: '1.4' }}>
+            {msg.content}
+          </div>
         </div>
       ))}
       <div ref={bottomRef} />
