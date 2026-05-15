@@ -13,38 +13,20 @@ export default function MessageList({ messages, username, selectedUser }) {
     return !msg.receiverName;
   });
 
+  // Único scroll necessário: quando o número de mensagens muda
   useEffect(() => {
-    const scrollToBottom = () => {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    };
-
-    scrollToBottom();
-    
-    // Executa uma segunda vez após um curto delay para garantir 
-    // que o redimensionamento do teclado terminou
-    const timeoutId = setTimeout(scrollToBottom, 100);
-    
-    return () => clearTimeout(timeoutId);
-  }, [filtered.length]); //
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [filtered.length]);
 
   return (
-    <div style={{
-      flex: 1,
-      overflowY: 'auto',
-      padding: '20px 0',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '15px'
-    }}>
+    <div style={{ flex: 1, overflowY: 'auto', padding: '10px 0' }}>
       {filtered.map((msg, i) => (
-        <div key={i} style={{ padding: '0 20px', borderLeft: msg.senderName === username ? '4px solid #5865f2' : '4px solid transparent' }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+        <div key={i} style={{ padding: '8px 20px', borderLeft: msg.senderName === username ? '4px solid #5865f2' : '4px solid transparent' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
             <b style={{ color: '#fff', fontSize: '14px' }}>{msg.senderName}</b>
-            <span style={{ color: '#72767d', fontSize: '11px' }}>Hoje às {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+            <span style={{ color: '#72767d', fontSize: '10px' }}>{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
           </div>
-          <div style={{ color: '#dcddde', marginTop: '4px', fontSize: '15px', lineHeight: '1.4' }}>
-            {msg.content}
-          </div>
+          <div style={{ color: '#dcddde', marginTop: '2px', fontSize: '15px' }}>{msg.content}</div>
         </div>
       ))}
       <div ref={bottomRef} />
